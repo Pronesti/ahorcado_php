@@ -1,0 +1,7 @@
+{
+    "name":"ahorcado",
+    "type":"project",
+    "require-dev": {
+        "phpunit/phpunit": "^8"
+    }
+}
