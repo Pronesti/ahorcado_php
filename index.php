@@ -25,7 +25,7 @@ if(isset($_GET['letra']) && !in_array($_GET['letra'], $_SESSION['letras_jugadas'
 
 if (isset($_POST['postForm'])) {
     if(isset($_POST['palabra']) && isset($_POST['vidas']) && $_POST['vidas'] > 0 ){
-        $_SESSION['palabra'] = $_POST['palabra'];
+        $_SESSION['palabra'] = strtolower($_POST['palabra'])    ;
         $_SESSION['vidas'] = $_POST['vidas'];
     }
 }
@@ -33,9 +33,9 @@ if (isset($_POST['postForm'])) {
 if(!isset($_SESSION['palabra'])){//si no tengo palabra no empezo el juego
     echo "<form action='' method='post'>";
     echo "<label>Selecciona la palabra para jugar:</label></br>";
-    echo "<input type='text' name='palabra'></input>";
+    echo "<input type='text' name='palabra' autocapitalize='none' pattern='[a-zA-Z]+'></input>";
     echo "</br><label>Selecciona la cantidad de vidas:</label></br>";
-    echo "<input type='number' name='vidas'></input></br>";
+    echo "<input type='number' name='vidas' min='1' step='1'></input></br>";
     echo "<input type='submit' name='postForm' value='Empezar Juego'>";
     echo "</form>";
 }else{
@@ -46,15 +46,9 @@ if(!isset($_SESSION['palabra'])){//si no tengo palabra no empezo el juego
     if($ahorcado->gane()){
         $_SESSION['score'] +=1;
         echo "<h1>GANASTE!!!</h1>";
-        echo "<form method='post'>";
-        echo "<input type='submit' name='reset' value='Reiniciar Juego'>";
-        echo "</form>";
     }elseif($ahorcado->perdi()){
         $_SESSION['score'] -=1;
         echo "<h1>PERDISTE!!!</h1>";
-        echo "<form method='post'>";
-        echo "<input type='submit' name='reset' value='Reiniciar Juego'>";
-        echo "</form>";
     }else{ // si no gane y no perdi entonces juego
         echo "<h1> Palabra: </br>";
         print(implode(" ", $ahorcado->mostrar()));
@@ -96,5 +90,8 @@ if(!isset($_SESSION['palabra'])){//si no tengo palabra no empezo el juego
     echo "</br><h3> Score: </br>";
     print($_SESSION['score']);
     echo "</h3>";
+    echo "<form method='post'>";
+    echo "<input type='submit' name='reset' value='Reiniciar Juego'>";
+    echo "</form>";
 } 
 
