@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ahorcado</title>
+</head>
+<body style='margin: 20vh auto;text-align:center;overflow: hidden;'>
 <?php
 include_once("Ahorcado.php");
 session_start();
@@ -31,13 +40,14 @@ if (isset($_POST['postForm'])) {
 }
 
 if(!isset($_SESSION['palabra'])){//si no tengo palabra no empezo el juego
-    echo "<form action='' method='post'>";
-    echo "<label>Selecciona la palabra para jugar:</label></br>";
-    echo "<input type='text' name='palabra' autocapitalize='none' pattern='[a-zA-Z]+'></input>";
-    echo "</br><label>Selecciona la cantidad de vidas:</label></br>";
-    echo "<input type='number' name='vidas' min='1' step='1'></input></br>";
-    echo "<input type='submit' name='postForm' value='Empezar Juego'>";
-    echo "</form>";
+    echo "<form action='' method='post'>
+    <h1>Nuevo Juego</h1>
+    <label>Selecciona la palabra para jugar:</label></br>
+    <input type='text' name='palabra' autocapitalize='none' pattern='[a-zA-Z]+'></input>
+    </br><label>Selecciona la cantidad de vidas:</label></br>
+    <input type='number' name='vidas' min='1' step='1'></input></br></br>
+    <input type='submit' name='postForm' value='Empezar Juego'>
+    </form>";
 }else{
     $ahorcado = new Ahorcado($_SESSION['palabra'],$_SESSION['vidas']);
     foreach($_SESSION['letras_jugadas'] as $v){
@@ -54,44 +64,28 @@ if(!isset($_SESSION['palabra'])){//si no tengo palabra no empezo el juego
         print(implode(" ", $ahorcado->mostrar()));
         echo "</br></h1><h3> Vidas restantes: </h3><h1>";
         for($i=0;$i<$ahorcado->vidasRestantes();$i++){
-            echo "♥";
+            echo "<span style='color:red'>♥</span>";
         }
         echo "</h1>";
         echo "<h3> Letras Jugadas: </br>";
         print(implode(",", $_SESSION['letras_jugadas']));
         echo "</h3></br>";
-        echo "<a href='index.php?letra=a'>A</a> ";
-        echo "<a href='index.php?letra=b'>B</a> ";
-        echo "<a href='index.php?letra=c'>C</a> ";
-        echo "<a href='index.php?letra=d'>D</a> ";
-        echo "<a href='index.php?letra=e'>E</a> ";
-        echo "<a href='index.php?letra=f'>F</a> ";
-        echo "<a href='index.php?letra=g'>G</a> ";
-        echo "<a href='index.php?letra=h'>H</a> ";
-        echo "<a href='index.php?letra=i'>I</a> ";
-        echo "<a href='index.php?letra=j'>J</a> ";
-        echo "<a href='index.php?letra=k'>K</a> ";
-        echo "<a href='index.php?letra=l'>L</a> ";
-        echo "<a href='index.php?letra=m'>M</a> ";
-        echo "<a href='index.php?letra=n'>N</a> ";
-        echo "<a href='index.php?letra=o'>O</a> ";
-        echo "<a href='index.php?letra=p'>P</a> ";
-        echo "<a href='index.php?letra=q'>Q</a> ";
-        echo "<a href='index.php?letra=r'>R</a> ";
-        echo "<a href='index.php?letra=s'>S</a> ";
-        echo "<a href='index.php?letra=t'>T</a> ";
-        echo "<a href='index.php?letra=u'>U</a> ";
-        echo "<a href='index.php?letra=v'>V</a> ";
-        echo "<a href='index.php?letra=w'>W</a> ";
-        echo "<a href='index.php?letra=x'>X</a> ";
-        echo "<a href='index.php?letra=y'>Y</a> ";
-        echo "<a href='index.php?letra=z'>Z</a> ";
+        foreach (range('a', 'z') as $char) {
+            $upperChar = strtoupper($char);
+            if (in_array($char, $_SESSION['letras_jugadas'])){
+                echo "<span style='color: grey'>$upperChar</span> ";
+            }else{
+                echo "<a href='index.php?letra=$char'>$upperChar</a> ";
+            }
+        }
     }
-    echo "</br><h3> Score: </br>";
+    echo "</br><h3> Score: ";
     print($_SESSION['score']);
-    echo "</h3>";
-    echo "<form method='post'>";
-    echo "<input type='submit' name='reset' value='Reiniciar Juego'>";
-    echo "</form>";
+    echo "</h3>
+    <form method='post'>
+    <input type='submit' name='reset' value='Reiniciar Juego'>
+    </form>";
 } 
-
+?> 
+</body>
+</html>
